@@ -1,0 +1,29 @@
+<div class="chat-shell">
+  <header class="chat-header">
+    <div class="title">AI Assistant</div>
+    <div class="actions">
+      <button type="button" class="btn secondary" (click)="clear()" [disabled]="isSending">Clear</button>
+      <button type="button" class="btn danger" (click)="stop()" *ngIf="isSending">Stop</button>
+    </div>
+  </header>
+
+  <main class="chat-body" #scrollContainer>
+    <div class="message-row" *ngFor="let m of messages">
+      <div class="avatar" [class.agent]="m.role === 'agent'" [class.user]="m.role === 'user'">
+        {{ m.role === 'agent' ? '🤖' : '🧑' }}
+      </div>
+      <div class="bubble" [class.agent]="m.role === 'agent'" [class.user]="m.role === 'user'">
+        <div [innerHTML]="m.html ?? m.content"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="chat-input">
+    <form class="input-row" (submit)="onSend(); $event.preventDefault()">
+      <textarea rows="1" placeholder="Message..." [(ngModel)]="userInput" name="userInput" [disabled]="isSending" (input)="autoGrow($event)"></textarea>
+      <button type="submit" class="btn primary" [disabled]="isSending || !userInput.trim()">{{ isSending ? 'Sending...' : 'Send' }}</button>
+    </form>
+  </footer>
+</div>
+
+
